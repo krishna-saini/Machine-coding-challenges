@@ -14,9 +14,9 @@ Task 4 --> user should be able to see visually the page on which it is right now
 Task 5 --> do not render pagination if there are no item to be rendered on 2nd page (done)
 
 # CR no. 3 Accessibility
-Task 1 --> user should able to tab through each item
+Task 1 --> user should able to tab through each item (done)
 Task 2 --> user should able to press enter while the item is in focus and it should take user to desired URL
-Task 3 --> user should able to focus pagination and tab through them
+Task 3 --> user should able to focus pagination and tab through them (Done)
 
 # CR no.4 Responsive 
 
@@ -38,3 +38,8 @@ it will be more performant and improves browser performance as frontend duty wil
 ## Array() 
 Array() is a constructor function used to create a new array.
 Array(2) -> [undefined, undefined]
+Array(2.5) --> error
+
+use onClick(() => setState(5)) instead of onClick(setState(5))
+
+use pagination logic from backend to reduce load on frontend

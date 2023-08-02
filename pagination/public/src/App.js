@@ -2,10 +2,9 @@ import "./App.css";
 import { useEffect, useState } from "react";
 
 export default function App() {
-  console.log("render app.kjs");
   const [products, setProducts] = useState([]);
   const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1)
+  const [totalPages, setTotalPages] = useState(1);
 
   const renderPagesBtn = () =>
     [...Array(products.length / 10)].map((_, index) => {
@@ -14,7 +13,9 @@ export default function App() {
 
   const fetchProducts = async () => {
     try {
-      const res = await fetch(`https://dummyjson.com/products?limit=9&skip=${page * 9 - 9}`);
+      const res = await fetch(
+        `https://dummyjson.com/products?limit=9&skip=${page * 9 - 9}`
+      );
       const data = await res.json();
 
       if (data && data.products) {
@@ -26,9 +27,13 @@ export default function App() {
     }
   };
 
-  const selectedPageHandler = (selectedPage) => {
-    if (selectedPage !== page) {
-      setPage(selectedPage);
+  const selectedPageHandler = (selectedPage, event) => {
+    if (
+      event?.keyCode === 13 ||
+      event?.key === "Enter" ||
+      event?.type === "click"
+    ) {
+      selectedPage !== page && setPage(selectedPage);
     }
   };
 
@@ -43,7 +48,7 @@ export default function App() {
         <div className="products">
           {products.map((product, index) => {
             return (
-              <div key={product.id} className="product__single">
+              <div tabIndex="0" key={product.id} className="product__single">
                 {/* bam convention classname  */}
                 <img src={product.thumbnail} alt={product.title} />
                 <span>{product.title}</span>
@@ -55,22 +60,40 @@ export default function App() {
       {products.length > 0 && (
         <div className="pagination">
           {page !== 1 && (
-            <span onClick={() => selectedPageHandler(page - 1)}>Prev</span>
+            <span
+              tabIndex="0"
+              onKeyDown={(e) => selectedPageHandler(page - 1, e)}
+              onClick={(e) => selectedPageHandler(page - 1, e)}
+              aria-label={`Click me to go from  ${page} to ${page - 1}`}
+            >
+              Prev
+            </span>
           )}
           {/* {renderPagesBtn()} */}
           {[...Array(totalPages)].map((_, index) => {
             return (
               <span
+                tabIndex="0"
+                role="button"
                 key={index}
-                onClick={() => selectedPageHandler(index + 1)}
+                onKeyDown={(e) => selectedPageHandler(index + 1, e)}
+                onClick={(e) => selectedPageHandler(index + 1, e)}
                 className={page === index + 1 ? "selectedPage" : ""}
+                aria-label={`Click me to change the page number to ${page}`}
               >
                 {index + 1}
               </span>
             );
           })}
           {page < totalPages && (
-            <span onClick={() => selectedPageHandler(page + 1)}>Next</span>
+            <span
+              tabIndex="0"
+              onKeyDown={(e) => selectedPageHandler(page + 1, e)}
+              onClick={(e) => selectedPageHandler(page + 1, e)}
+              aria-label={`Click me to go from  ${page} to ${page + 1}`}
+            >
+              Next
+            </span>
           )}
         </div>
       )}
