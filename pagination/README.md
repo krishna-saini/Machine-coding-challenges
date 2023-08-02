@@ -22,6 +22,12 @@ Task 3 --> user should able to focus pagination and tab through them
 
 # CR no. 5 Refactoring
 
+# CR no. 6 Can we use event delegation?
+
+# CR no. 7 -> do pagination from backend
+it will be more performant and improves browser performance as frontend duty will be less (d0ne)
+
+
 
 
 # Learning 

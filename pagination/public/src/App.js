@@ -5,6 +5,7 @@ export default function App() {
   console.log("render app.kjs");
   const [products, setProducts] = useState([]);
   const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1)
 
   const renderPagesBtn = () =>
     [...Array(products.length / 10)].map((_, index) => {
@@ -13,11 +14,12 @@ export default function App() {
 
   const fetchProducts = async () => {
     try {
-      const res = await fetch("https://dummyjson.com/products");
+      const res = await fetch(`https://dummyjson.com/products?limit=9&skip=${page * 9 - 9}`);
       const data = await res.json();
 
       if (data && data.products) {
         setProducts(data.products);
+        setTotalPages(Math.ceil(data.total / 9));
       }
     } catch (error) {
       console.log(error);
@@ -31,14 +33,15 @@ export default function App() {
   };
 
   useEffect(() => {
+    // call this whenever page is changed
     fetchProducts();
-  }, []);
+  }, [page]);
 
   return (
     <>
       {products.length > 0 && (
         <div className="products">
-          {products.slice(page * 9 - 9, page * 9).map((product, index) => {
+          {products.map((product, index) => {
             return (
               <div key={product.id} className="product__single">
                 {/* bam convention classname  */}
@@ -49,13 +52,13 @@ export default function App() {
           })}
         </div>
       )}
-      {products.length > 9 && (
+      {products.length > 0 && (
         <div className="pagination">
           {page !== 1 && (
             <span onClick={() => selectedPageHandler(page - 1)}>Prev</span>
           )}
           {/* {renderPagesBtn()} */}
-          {[...Array(Math.ceil(products.length / 9))].map((_, index) => {
+          {[...Array(totalPages)].map((_, index) => {
             return (
               <span
                 key={index}
@@ -66,7 +69,7 @@ export default function App() {
               </span>
             );
           })}
-          {page < products.length / 9 && (
+          {page < totalPages && (
             <span onClick={() => selectedPageHandler(page + 1)}>Next</span>
           )}
         </div>
