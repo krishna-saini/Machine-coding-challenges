@@ -2,38 +2,20 @@ import "./App.css";
 import { useEffect, useState } from "react";
 
 export default function App() {
+  console.log("render app.kjs");
   const [products, setProducts] = useState([]);
   const [page, setPage] = useState(1);
 
-  const renderPrevBtn = () => {
-    const shouldRenderPrevBtn = page !== 1 && products.length <= 9;
-    return (
-      shouldRenderPrevBtn && (
-        <button onClick={setPage((prev) => prev--)}>Prev</button>
-      )
-    );
-  };
-
-  const renderNextBtn = () => {
-    const shouldRenderNextBtn =
-      products.length % (10 * (page - 1)) > 10 && products.length <= 10;
-    return (
-      shouldRenderNextBtn && (
-        <button onClick={setPage((prev) => prev++)}>Next</button>
-      )
-    );
-  };
-
   const renderPagesBtn = () =>
     [...Array(products.length / 10)].map((_, index) => {
-      return <span>i</span>;
+      return <span>{index + 1}</span>;
     });
 
   const fetchProducts = async () => {
     try {
       const res = await fetch("https://dummyjson.com/products");
       const data = await res.json();
-      console.log(data);
+
       if (data && data.products) {
         setProducts(data.products);
       }
@@ -41,12 +23,17 @@ export default function App() {
       console.log(error);
     }
   };
+
+  const selectedPageHandler = (selectedPage) => {
+    if (selectedPage !== page) {
+      setPage(selectedPage);
+    }
+  };
+
   useEffect(() => {
     fetchProducts();
   }, []);
-  console.log(Array(products.length / 10), "i", [
-    ...Array(products.length / 10)
-  ]);
+
   return (
     <>
       {products.length > 0 && (
@@ -62,13 +49,26 @@ export default function App() {
           })}
         </div>
       )}
-      {products.length > 0 && (
+      {products.length > 9 && (
         <div className="pagination">
-          <button>back</button>
-          {[...Array(products.length / 10)].map((_, index) => {
-            return <span>{index + 1}</span>;
+          {page !== 1 && (
+            <span onClick={() => selectedPageHandler(page - 1)}>Prev</span>
+          )}
+          {/* {renderPagesBtn()} */}
+          {[...Array(Math.ceil(products.length / 9))].map((_, index) => {
+            return (
+              <span
+                key={index}
+                onClick={() => selectedPageHandler(index + 1)}
+                className={page === index + 1 ? "selectedPage" : ""}
+              >
+                {index + 1}
+              </span>
+            );
           })}
-          <button>Next</button>
+          {page < products.length / 9 && (
+            <span onClick={() => selectedPageHandler(page + 1)}>Next</span>
+          )}
         </div>
       )}
     </>

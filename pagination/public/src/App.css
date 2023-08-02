@@ -14,7 +14,7 @@
   border-radius: 5px;
 }
 
-.product__single > img {
+.product__single>img {
   width: 100%;
   height: 95%;
   object-fit: cover;
@@ -28,8 +28,12 @@
   justify-content: center;
 }
 
-.pagination > * {
+.pagination>span {
   padding: 15px 20px;
   border: 1px solid grey;
   cursor: pointer;
+}
+
+.selectedPage {
+  background-color: grey;
 }
