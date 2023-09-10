@@ -2,6 +2,8 @@ Pagination  on page 1 ->      <u>1</u> 2 3 Next
 pagination on page 2 -> prev 1 __2__ 3 Next
 pagination on last page => prev 1 2 __3__
 
+// API used -->  https://dummyjson.com/products
+
 # CR no.1 UI
 
 # CR no.2
