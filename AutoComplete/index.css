@@ -20,3 +20,12 @@ form {
     padding: 5px;
     display: none;
 }
+
+ul{
+    list-style: none;
+}
+
+li{
+    cursor: pointer;
+    margin: 3px 0;
+}

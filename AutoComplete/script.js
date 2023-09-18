@@ -19,13 +19,17 @@
   };
 
   const onOverlayClick = (e) => {
+    console.log(e.target, e.target.type, e.type);
+    if (e.target.tagName === "INPUT" || e.target === suggestionArea) {
+      return;
+    }
     suggestionArea.style.display = "none";
   };
 
   const processData = async (value) => {
     // base case
+    suggestionArea.innerHTML = "";
     if (!value) {
-      suggestionArea.innerHTML = "";
       return;
     }
     try {
@@ -37,9 +41,9 @@
       if (data.length > 0) {
         const list = document.createElement("ul");
         data.forEach((el) => {
-          const listItems = document.createElement("li");
-          listItems.innerText = el.title;
-          list.appendChild(listItems);
+          const listItem = document.createElement("li");
+          listItem.innerText = el.title;
+          list.appendChild(listItem);
         });
         suggestionArea.appendChild(list);
       }
@@ -53,7 +57,19 @@
     processData(value);
   };
 
+  const onListItemClick = (e) => {
+    console.log("cloickjasdklfj", e.target.tagName);
+    if (e.target.tagName === "LI") {
+      searchEl.value = e.target.innerText;
+      input.focus();
+    }
+  };
+
   searchEl.addEventListener("focus", onFocus);
-  searchEl.addEventListener("blur", onOverlayClick);
+  window.addEventListener("blur", onOverlayClick);
   searchEl.addEventListener("keyup", onChange);
+
+  // clicking on any searched result should populate the input box with that result
+  // use event delegation
+  suggestionArea.addEventListener("click", onListItemClick);
 })();
